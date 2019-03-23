@@ -1,9 +1,8 @@
 # Projectify
 
-The Projectify Ruby library provides convenient access to common functionality of NEC-made projectors for applications written
-in the Ruby language. It uses the ASCII character interface across the local area network.
+The Projectify Ruby library provides convenient access to common functionality of NEC-made projectors for applications written in the Ruby language. It uses the ASCII character interface across the local area network.
 
-Although NEC projectors often have a web interface available to perform similar functions, this library allows the same command to be broadcast to multiple projects, thereby allowing all specified projectors to stay in sync.
+Although NEC projectors often have a web interface available to perform similar functions, this library allows the same command to be broadcast to multiple projectors, thereby allowing all specified projectors to stay in sync.
 
 ## Documentation
 
