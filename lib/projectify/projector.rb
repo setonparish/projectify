@@ -19,10 +19,16 @@ module Projectify
       call(POWER_OFF)
     end
 
-    def status
-      {
-        power: call(POWER_STATUS)
-      }
+    def power_on?
+      power_status.include?(POWER_STATUS_ON_QUERY)
+    end
+
+    def power_off?
+      power_status.include?(POWER_STATUS_OFF_QUERY)
+    end
+
+    def power_status
+      call(POWER_STATUS)
     end
 
 

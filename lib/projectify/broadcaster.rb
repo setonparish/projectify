@@ -8,6 +8,11 @@ module Projectify
       end
     end
 
+    def all?(method)
+      return false if projectors.empty?
+      projectors.all? { |p| p.send(method) }
+    end
+
     def call(command)
       hsh = {}
       projectors.each do |projector|

@@ -16,10 +16,54 @@ RSpec.describe Projectify::Projector do
     end
   end
 
-  describe "#status" do
+  describe "#power_status" do
     it "sends the command" do
       expect(service).to receive(:call).with(POWER_STATUS)
-      service.status
+      service.power_status
+    end
+  end
+
+  describe "#power_on?" do
+    context "when projector is on" do
+      before do
+        expect(service).to receive(:call).with(POWER_STATUS) { ">power cur=on,sel=on|off\r\n" }
+      end
+
+      it "is true" do
+        expect(service.power_on?).to eq(true)
+      end
+    end
+
+    context "when projector is off" do
+      before do
+        expect(service).to receive(:call).with(POWER_STATUS) { ">power cur=off,sel=on|off\r\n" }
+      end
+
+      it "is false" do
+        expect(service.power_on?).to eq(false)
+      end
+    end
+  end
+
+  describe "#power_off?" do
+    context "when projector is on" do
+      before do
+        expect(service).to receive(:call).with(POWER_STATUS) { ">power cur=on,sel=on|off\r\n" }
+      end
+
+      it "is false" do
+        expect(service.power_off?).to eq(false)
+      end
+    end
+
+    context "when projector is off" do
+      before do
+        expect(service).to receive(:call).with(POWER_STATUS) { ">power cur=off,sel=on|off\r\n" }
+      end
+
+      it "is true" do
+        expect(service.power_off?).to eq(true)
+      end
     end
   end
 

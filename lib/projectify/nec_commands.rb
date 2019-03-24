@@ -1,3 +1,5 @@
 POWER_STATUS = "power ?"
 POWER_ON = "power on"
 POWER_OFF = "power off"
+POWER_STATUS_ON_QUERY = "cur=on"
+POWER_STATUS_OFF_QUERY = "cur=off"
