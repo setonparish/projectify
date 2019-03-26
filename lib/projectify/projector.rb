@@ -19,18 +19,29 @@ module Projectify
       call(POWER_OFF)
     end
 
-    def power_on?
-      power_status.include?(POWER_STATUS_ON_QUERY)
-    end
-
-    def power_off?
-      power_status.include?(POWER_STATUS_OFF_QUERY)
-    end
-
     def power_status
-      call(POWER_STATUS)
+      call(STATUS)
     end
 
+    def powered_on?
+      power_status.include?("running")
+    end
+
+    def cooling_down?
+      power_status.include?("cooling")
+    end
+
+    def warming_up?
+      power_status.include?("warming")
+    end
+
+    def powered_off?
+      power_status.include?("standby")
+    end
+
+    def power_transitioning?
+      warming_up? || cooling_down?
+    end
 
     private
 

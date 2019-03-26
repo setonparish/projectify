@@ -13,6 +13,11 @@ module Projectify
       projectors.all? { |p| p.send(method) }
     end
 
+    def any?(method)
+      return false if projectors.empty?
+      projectors.any? { |p| p.send(method) }
+    end
+
     def call(command)
       hsh = {}
       projectors.each do |projector|

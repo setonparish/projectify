@@ -18,51 +18,71 @@ RSpec.describe Projectify::Projector do
 
   describe "#power_status" do
     it "sends the command" do
-      expect(service).to receive(:call).with(POWER_STATUS)
+      expect(service).to receive(:call).with(STATUS)
       service.power_status
     end
   end
 
-  describe "#power_on?" do
+  describe "#powered_on?" do
     context "when projector is on" do
       before do
-        expect(service).to receive(:call).with(POWER_STATUS) { ">power cur=on,sel=on|off\r\n" }
+        expect(service).to receive(:call).with(STATUS) { ">status running;error:cover&filter;warning:light\r\n" }
       end
 
       it "is true" do
-        expect(service.power_on?).to eq(true)
+        expect(service.powered_on?).to eq(true)
       end
     end
 
     context "when projector is off" do
       before do
-        expect(service).to receive(:call).with(POWER_STATUS) { ">power cur=off,sel=on|off\r\n" }
+        expect(service).to receive(:call).with(STATUS) { ">status standy;error:cover&filter;warning:light\r\n" }
       end
 
       it "is false" do
-        expect(service.power_on?).to eq(false)
+        expect(service.powered_on?).to eq(false)
+      end
+    end
+
+    context "when projector is still warming up" do
+      before do
+        expect(service).to receive(:call).with(STATUS) { ">status warming;error:cover&filter;warning:light\r\n" }
+      end
+
+      it "is false" do
+        expect(service.powered_on?).to eq(false)
       end
     end
   end
 
-  describe "#power_off?" do
+  describe "#powered_off?" do
     context "when projector is on" do
       before do
-        expect(service).to receive(:call).with(POWER_STATUS) { ">power cur=on,sel=on|off\r\n" }
+        expect(service).to receive(:call).with(STATUS) { ">status running;error:cover&filter;warning:light\r\n" }
       end
 
       it "is false" do
-        expect(service.power_off?).to eq(false)
+        expect(service.powered_off?).to eq(false)
       end
     end
 
     context "when projector is off" do
       before do
-        expect(service).to receive(:call).with(POWER_STATUS) { ">power cur=off,sel=on|off\r\n" }
+        expect(service).to receive(:call).with(STATUS) { ">status standby;error:cover&filter;warning:light\r\n" }
       end
 
       it "is true" do
-        expect(service.power_off?).to eq(true)
+        expect(service.powered_off?).to eq(true)
+      end
+    end
+
+    context "when projector is still cooling" do
+      before do
+        expect(service).to receive(:call).with(STATUS) { ">status cooling;error:cover&filter;warning:light\r\n" }
+      end
+
+      it "is false" do
+        expect(service.powered_off?).to eq(false)
       end
     end
   end

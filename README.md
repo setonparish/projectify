@@ -32,9 +32,15 @@ end
 
 # send command to multiple projectors
 broadcaster = Projectify::Broadcaster.new
-broadcaster.power_off # { "127.0.0.50" => ">ok", "127.0.0.99" => ">ok" }
-broadcaster.power_on
-broadcaster.status
+broadcaster.call(:power_off) # { "127.0.0.50" => ">ok", "127.0.0.99" => ">ok" }
+broadcaster.call(:power_on)
+broadcaster.call(:status)
+
+# check status on multiple projectors
+broadcaster = Projectify::Broadcaster.new
+broadcaster.all?(:powered_on?)
+broadcaster.any?(:powered_off?)
+broadcaster.all?(:power_transitioning?) # warming or cooling, but not yet in final state
 ```
 
 ## Development
