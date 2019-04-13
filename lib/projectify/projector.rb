@@ -23,6 +23,10 @@ module Projectify
       call(STATUS)
     end
 
+    def busy?
+      power_status.include?("busy")
+    end
+
     def powered_on?
       power_status.include?("running")
     end
@@ -40,7 +44,7 @@ module Projectify
     end
 
     def power_transitioning?
-      warming_up? || cooling_down?
+      busy? || warming_up? || cooling_down?
     end
 
     private
