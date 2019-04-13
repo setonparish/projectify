@@ -34,7 +34,7 @@ end
 broadcaster = Projectify::Broadcaster.new
 broadcaster.call(:power_off) # { "127.0.0.50" => ">ok", "127.0.0.99" => ">ok" }
 broadcaster.call(:power_on)
-broadcaster.call(:status)
+broadcaster.call(:power_status)
 
 # check status on multiple projectors
 broadcaster = Projectify::Broadcaster.new
