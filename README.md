@@ -35,12 +35,16 @@ broadcaster = Projectify::Broadcaster.new
 broadcaster.call(:power_off) # { "127.0.0.50" => ">ok", "127.0.0.99" => ">ok" }
 broadcaster.call(:power_on)
 broadcaster.call(:power_status)
+broadcaster.call(:shutter_open)
+broadcaster.call(:shutter_close)
 
 # check status on multiple projectors
 broadcaster = Projectify::Broadcaster.new
 broadcaster.all?(:powered_on?)
 broadcaster.any?(:powered_off?)
 broadcaster.all?(:power_transitioning?) # warming or cooling, but not yet in final state
+broadcaster.all?(:shutter_open?)
+broadcaster.any?(:shutter_close?)
 ```
 
 ## Development

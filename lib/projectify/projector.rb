@@ -23,6 +23,18 @@ module Projectify
       call(STATUS)
     end
 
+    def shutter_open
+      call(SHUTTER_OPEN)
+    end
+
+    def shutter_close
+      call(SHUTTER_CLOSE)
+    end
+
+    def shutter_status
+      call(SHUTTER_STATUS)
+    end
+
     def busy?
       power_status.include?("busy")
     end
@@ -41,6 +53,14 @@ module Projectify
 
     def powered_off?
       power_status.include?("standby")
+    end
+
+    def shutter_open?
+      shutter_status.include?("cur=open")
+    end
+
+    def shutter_close?
+      shutter_status.include?("cur=close")
     end
 
     def power_transitioning?

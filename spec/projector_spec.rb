@@ -87,6 +87,74 @@ RSpec.describe Projectify::Projector do
     end
   end
 
+
+  # ">shutter cur=open,sel=open|close"
+  describe "#shutter_open" do
+    it "sends the command" do
+      expect(service).to receive(:call).with(SHUTTER_OPEN)
+      service.shutter_open
+    end
+  end
+
+  describe "#shutter_close" do
+    it "sends the command" do
+      expect(service).to receive(:call).with(SHUTTER_CLOSE)
+      service.shutter_close
+    end
+  end
+
+  describe "#shutter_status" do
+    it "sends the command" do
+      expect(service).to receive(:call).with(SHUTTER_STATUS)
+      service.shutter_status
+    end
+  end
+
+  describe "#shutter_open?" do
+    context "when shutter is open" do
+      before do
+        expect(service).to receive(:call).with(SHUTTER_STATUS) {">shutter cur=open,sel=open|close\r\n" }
+      end
+
+      it "is true" do
+        expect(service.shutter_open?).to eq(true)
+      end
+    end
+
+    context "when shutter is closed" do
+      before do
+        expect(service).to receive(:call).with(SHUTTER_STATUS) { ">>shutter cur=closed,sel=open|close\r\n" }
+      end
+
+      it "is false" do
+        expect(service.shutter_open?).to eq(false)
+      end
+    end
+  end
+
+  describe "#shutter_close?" do
+    context "when shutter is closed" do
+      before do
+        expect(service).to receive(:call).with(SHUTTER_STATUS) {">shutter cur=close,sel=open|close\r\n" }
+      end
+
+      it "is true" do
+        expect(service.shutter_close?).to eq(true)
+      end
+    end
+
+    context "when shutter is open" do
+      before do
+        expect(service).to receive(:call).with(SHUTTER_STATUS) { ">>shutter cur=open,sel=open|close\r\n" }
+      end
+
+      it "is false" do
+        expect(service.shutter_close?).to eq(false)
+      end
+    end
+  end
+
+
   #
   # Although this is a private method, it is intentionally being
   # tested to increase comfort of correct command handling and
